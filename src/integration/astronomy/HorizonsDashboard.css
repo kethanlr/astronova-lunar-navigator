@@ -1,0 +1,79 @@
+
+.horizons-dashboard {
+  width: 100%;
+  padding: 24px;
+  margin-top: 24px;
+  border: 1px solid rgba(120, 160, 210, 0.25);
+  border-radius: 16px;
+  background: rgba(12, 25, 45, 0.85);
+  color: #e8f1ff;
+}
+
+.horizons-dashboard h2 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  color: #ffffff;
+}
+
+.horizons-dashboard > p {
+  color: #a9bdd8;
+  font-size: 0.9rem;
+}
+
+.horizons-dashboard button {
+  margin: 14px 0;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #3478db;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.horizons-dashboard button:hover {
+  background: #2464bd;
+}
+
+.horizons-dashboard button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.horizons-target {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid rgba(120, 160, 210, 0.2);
+  border-radius: 12px;
+  background: rgba(20, 40, 68, 0.75);
+}
+
+.horizons-target h3 {
+  margin-top: 0;
+  color: #83bcff;
+  font-size: 1rem;
+}
+
+.horizons-row {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.horizons-row strong {
+  color: #ffffff;
+}
+
+.horizons-row p {
+  margin: 7px 0;
+  color: #c1d2e8;
+  font-size: 0.9rem;
+}
+
+.horizons-note {
+  margin-top: 18px;
+  line-height: 1.5;
+  font-size: 0.8rem;
+  color: #91a8c5;
+}
