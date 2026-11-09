@@ -1,0 +1,79 @@
+
+
+.lunar-map-wrapper {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(116, 157, 210, 0.2);
+  border-radius: 14px;
+  background: #080d18;
+}
+
+.lunar-map-heading,
+.lunar-map-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  color: #aabbd1;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.lunar-map-heading {
+  border-bottom: 1px solid rgba(116, 157, 210, 0.15);
+  color: #e2edff;
+  font-weight: 700;
+}
+
+.lunar-map-footer {
+  border-top: 1px solid rgba(116, 157, 210, 0.15);
+  color: #8193aa;
+  letter-spacing: 0.3px;
+  font-size: 10px;
+}
+
+.map-live-indicator {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: #57d6a0;
+  box-shadow: 0 0 9px #57d6a0;
+}
+
+.map-data-label {
+  color: #7ea9e7;
+  font-size: 9px;
+}
+
+.lunar-map {
+  width: 100%;
+  height: 470px;
+  background: #080b12;
+}
+
+.lunar-map .ol-viewport {
+  background: #080b12;
+}
+
+.lunar-map .ol-control button {
+  background: rgba(13, 25, 43, 0.9);
+  color: #dceaff;
+}
+
+.lunar-map .ol-control button:hover {
+  background: #1d3557;
+}
+
+@media (max-width: 600px) {
+  .lunar-map {
+    height: 350px;
+  }
+
+  .lunar-map-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
