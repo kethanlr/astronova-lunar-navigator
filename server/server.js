@@ -1,6 +1,6 @@
-
 import { createServer } from "node:http";
 import { parseHorizonsObserverResult } from "../src/integration/astronomy/horizonsParser.js";
+import { validateMissionScenario } from "../src/integration/astronomy/validateMissionScenario.js";
 
 const PORT = 3001;
 const HORIZONS_API = "https://ssd.jpl.nasa.gov/api/horizons.api";
@@ -48,66 +48,36 @@ function validateRequest(data) {
     throw new HttpError(400, "Request body must be a JSON object.");
   }
 
-  const target = allowedTargets[data.target];
-
+const target = Object.hasOwn(allowedTargets, data.target)
+  ? allowedTargets[data.target]
+  : null;
   if (!target) {
     throw new HttpError(400, "Target must be 'sun' or 'earth'.");
   }
 
-  const { longitudeEastDeg, latitudeDeg, altitudeMeters } = data;
+  const {
+    longitudeEastDeg,
+    latitudeDeg,
+    altitudeMeters,
+    startTime,
+    stopTime,
+  } = data;
 
-  if (
-    !Number.isFinite(longitudeEastDeg) ||
-    longitudeEastDeg < 0 ||
-    longitudeEastDeg > 360
-  ) {
-    throw new HttpError(
-      400,
-      "Invalid east longitude. Expected 0 to 360 degrees."
-    );
-  }
+  const validation = validateMissionScenario({
+    sites: [
+      {
+        id: "horizons-request",
+        longitudeEastDeg,
+        latitudeDeg,
+      },
+    ],
+    altitudeMeters,
+    startTime,
+    stopTime,
+  });
 
-  if (
-    !Number.isFinite(latitudeDeg) ||
-    latitudeDeg < -90 ||
-    latitudeDeg > 90
-  ) {
-    throw new HttpError(
-      400,
-      "Invalid latitude. Expected -90 to 90 degrees."
-    );
-  }
-
-  if (!Number.isFinite(altitudeMeters) || altitudeMeters < 0) {
-    throw new HttpError(400, "Invalid altitude in meters.");
-  }
-
-  const timePattern = /^\d{4}-[A-Za-z]{3}-\d{2} \d{2}:\d{2}$/;
-
-  if (
-    typeof data.startTime !== "string" ||
-    typeof data.stopTime !== "string" ||
-    !timePattern.test(data.startTime) ||
-    !timePattern.test(data.stopTime)
-  ) {
-    throw new HttpError(
-      400,
-      "Invalid time. Expected YYYY-MMM-DD HH:mm."
-    );
-  }
-
-  const start = new Date(`${data.startTime}:00 UTC`);
-  const stop = new Date(`${data.stopTime}:00 UTC`);
-
-  if (
-    !Number.isFinite(start.getTime()) ||
-    !Number.isFinite(stop.getTime()) ||
-    stop <= start
-  ) {
-    throw new HttpError(
-      400,
-      "Stop time must be later than start time, and both dates must be valid."
-    );
+  if (!validation.valid) {
+    throw new HttpError(400, validation.error);
   }
 
   return {
@@ -115,8 +85,8 @@ function validateRequest(data) {
     longitudeEastDeg,
     latitudeDeg,
     altitudeMeters,
-    startTime: data.startTime,
-    stopTime: data.stopTime,
+    startTime,
+    stopTime,
   };
 }
 
