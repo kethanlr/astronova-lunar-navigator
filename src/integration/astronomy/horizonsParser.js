@@ -6,6 +6,7 @@
  * Extracts UTC timestamp, apparent azimuth and elevation
  * from a Horizons API response.
  *
+ * Supports timestamps with or without seconds.
  * Angles are returned in degrees.
  */
 
@@ -31,8 +32,11 @@ export function parseHorizonsObserverResult(resultText) {
 
   const lines = tableText.split(/\r?\n/);
 
+  // Supports both HH:MM and HH:MM:SS timestamps.
+  // Presence markers are optional.
   const rowPattern =
-/^\s*(\d{4}-[A-Za-z]{3}-\d{2}\s+\d{2}:\d{2}:\d{2})\s*([*ierst]{0,2})\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*$/
+    /^\s*(\d{4}-[A-Za-z]{3}-\d{2}\s+\d{2}:\d{2}(?::\d{2})?)\s*([*ierst]{0,2})\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*$/;
+
   const rows = [];
 
   for (const line of lines) {

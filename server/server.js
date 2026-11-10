@@ -21,6 +21,7 @@ function sendJson(response, status, data) {
   response.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
   });
+
   response.end(JSON.stringify(data));
 }
 
@@ -195,7 +196,6 @@ async function getHorizonsData(data) {
     parsed = parseHorizonsObserverResult(payload.result);
   } catch (error) {
     console.error("Horizons parser error:", error.message);
-
     throw new HttpError(
       502,
       "Unable to interpret the NASA Horizons response."
