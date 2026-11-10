@@ -1,0 +1,302 @@
+{
+  "metadata": {
+    "source": "NASA Goddard Planetary Geodesy and Altimetry Data",
+    "sourceUrl": "https://pgda.gsfc.nasa.gov/products/78",
+    "dataset": "High-Resolution LOLA Topography for Lunar South Pole Sites",
+    "siteProduct": "Site07 - Peak Near Shackleton",
+    "resolutionMetersPerPixel": 5,
+    "moonReferenceRadiusMeters": 1737400.0,
+    "windowDimensionsPixels": [
+      21,
+      21
+    ],
+    "windowApproximateSizeMeters": [
+      105,
+      105
+    ],
+    "processing": "Local raster extraction and descriptive statistics",
+    "limitations": [
+      "Elevation products may contain interpolated pixels.",
+      "LDEC zero means no LOLA measurement spot recorded in that pixel.",
+      "A nonzero LDEC count does not independently establish landing safety.",
+      "Neighbourhood statistics do not replace detailed hazard mapping.",
+      "No landing suitability score is calculated.",
+      "Terrain obstruction and illumination are not evaluated here."
+    ]
+  },
+  "sites": {
+    "PNS01": {
+      "coordinates": {
+        "longitudeEastDeg": 134.106,
+        "latitudeDeg": -88.969
+      },
+      "projectedCoordinatesMeters": {
+        "x": 22449.378521128903,
+        "y": -21759.520321573247
+      },
+      "rasterPixel": {
+        "row": 1951,
+        "column": 89
+      },
+      "products": {
+        "elevation": {
+          "unit": "metres",
+          "description": "Interpolated lunar surface elevation",
+          "centrePixel": 1176.862060546875,
+          "neighbourhood": {
+            "minimum": 1173.5230712890625,
+            "median": 1176.385986328125,
+            "mean": 1176.5640880212761,
+            "maximum": 1180.2896728515625,
+            "standardDeviation": 1.5816284480005314,
+            "validPixels": 441
+          }
+        },
+        "slope": {
+          "unit": "degrees",
+          "description": "Surface slope",
+          "centrePixel": 2.0563321113586426,
+          "neighbourhood": {
+            "minimum": 0.4238234758377075,
+            "median": 3.253113269805908,
+            "mean": 3.4279562644407053,
+            "maximum": 9.692254066467285,
+            "standardDeviation": 1.2258154337093066,
+            "validPixels": 441
+          }
+        },
+        "measurementCount": {
+          "unit": "measurement spots per pixel",
+          "description": "LOLA measurement count",
+          "centrePixel": 0.0,
+          "neighbourhood": {
+            "minimum": 0.0,
+            "median": 0.0,
+            "mean": 0.07709750566893424,
+            "maximum": 1.0,
+            "standardDeviation": 0.26674609704466695,
+            "validPixels": 441
+          },
+          "measurementCoverage": {
+            "pixelsWithMeasurements": 34,
+            "pixelsWithoutMeasurements": 407,
+            "coveragePercent": 7.709750566893424,
+            "countDistribution": {
+              "0.0": 407,
+              "1.0": 34
+            }
+          }
+        },
+        "slopeUncertainty": {
+          "unit": "degrees RMS",
+          "description": "Slope uncertainty",
+          "centrePixel": 2.0374276638031006,
+          "neighbourhood": {
+            "minimum": 1.1326385736465454,
+            "median": 1.9156758785247803,
+            "mean": 1.9035275450098812,
+            "maximum": 2.7698254585266113,
+            "standardDeviation": 0.318533772563918,
+            "validPixels": 441
+          }
+        },
+        "elevationUncertainty": {
+          "unit": "metres RMS",
+          "description": "Total elevation uncertainty",
+          "centrePixel": 0.4322330057621002,
+          "neighbourhood": {
+            "minimum": 0.11548521369695663,
+            "median": 0.34353914856910706,
+            "mean": 0.38524599905524937,
+            "maximum": 0.8632434606552124,
+            "standardDeviation": 0.18094604924825644,
+            "validPixels": 441
+          }
+        }
+      }
+    },
+    "PNS02": {
+      "coordinates": {
+        "longitudeEastDeg": 128.442,
+        "latitudeDeg": -89.061
+      },
+      "projectedCoordinatesMeters": {
+        "x": 22302.12286446845,
+        "y": -17703.078552476312
+      },
+      "rasterPixel": {
+        "row": 1140,
+        "column": 60
+      },
+      "products": {
+        "elevation": {
+          "unit": "metres",
+          "description": "Interpolated lunar surface elevation",
+          "centrePixel": 1148.6427001953125,
+          "neighbourhood": {
+            "minimum": 1146.0096435546875,
+            "median": 1148.59375,
+            "mean": 1148.4749523344494,
+            "maximum": 1150.6903076171875,
+            "standardDeviation": 1.2251368002246048,
+            "validPixels": 441
+          }
+        },
+        "slope": {
+          "unit": "degrees",
+          "description": "Surface slope",
+          "centrePixel": 3.0823562145233154,
+          "neighbourhood": {
+            "minimum": 0.05595290660858154,
+            "median": 2.726203441619873,
+            "mean": 2.922439151002166,
+            "maximum": 9.443460464477539,
+            "standardDeviation": 1.481200685186605,
+            "validPixels": 441
+          }
+        },
+        "measurementCount": {
+          "unit": "measurement spots per pixel",
+          "description": "LOLA measurement count",
+          "centrePixel": 0.0,
+          "neighbourhood": {
+            "minimum": 0.0,
+            "median": 0.0,
+            "mean": 0.09977324263038549,
+            "maximum": 3.0,
+            "standardDeviation": 0.35510522641004,
+            "validPixels": 441
+          },
+          "measurementCoverage": {
+            "pixelsWithMeasurements": 38,
+            "pixelsWithoutMeasurements": 403,
+            "coveragePercent": 8.616780045351474,
+            "countDistribution": {
+              "0.0": 403,
+              "1.0": 34,
+              "2.0": 2,
+              "3.0": 2
+            }
+          }
+        },
+        "slopeUncertainty": {
+          "unit": "degrees RMS",
+          "description": "Slope uncertainty",
+          "centrePixel": 2.1079177856445312,
+          "neighbourhood": {
+            "minimum": 1.094460129737854,
+            "median": 1.7496302127838135,
+            "mean": 1.7347385523811218,
+            "maximum": 2.403616189956665,
+            "standardDeviation": 0.25402175361821494,
+            "validPixels": 441
+          }
+        },
+        "elevationUncertainty": {
+          "unit": "metres RMS",
+          "description": "Total elevation uncertainty",
+          "centrePixel": 0.42620912194252014,
+          "neighbourhood": {
+            "minimum": 0.10134036093950272,
+            "median": 0.29688915610313416,
+            "mean": 0.3068103712398449,
+            "maximum": 0.5938831567764282,
+            "standardDeviation": 0.1089575527378212,
+            "validPixels": 441
+          }
+        }
+      }
+    },
+    "PNS03": {
+      "coordinates": {
+        "longitudeEastDeg": 126.992,
+        "latitudeDeg": -88.852
+      },
+      "projectedCoordinatesMeters": {
+        "x": 27805.320601288815,
+        "y": -20946.725667750914
+      },
+      "rasterPixel": {
+        "row": 1789,
+        "column": 1161
+      },
+      "products": {
+        "elevation": {
+          "unit": "metres",
+          "description": "Interpolated lunar surface elevation",
+          "centrePixel": 1489.87548828125,
+          "neighbourhood": {
+            "minimum": 1486.1156005859375,
+            "median": 1489.2625732421875,
+            "mean": 1489.1833014455783,
+            "maximum": 1491.2713623046875,
+            "standardDeviation": 1.101868578962227,
+            "validPixels": 441
+          }
+        },
+        "slope": {
+          "unit": "degrees",
+          "description": "Surface slope",
+          "centrePixel": 4.011124610900879,
+          "neighbourhood": {
+            "minimum": 0.18238423764705658,
+            "median": 3.2885477542877197,
+            "mean": 3.293429858593984,
+            "maximum": 7.955271244049072,
+            "standardDeviation": 1.408770408789531,
+            "validPixels": 441
+          }
+        },
+        "measurementCount": {
+          "unit": "measurement spots per pixel",
+          "description": "LOLA measurement count",
+          "centrePixel": 0.0,
+          "neighbourhood": {
+            "minimum": 0.0,
+            "median": 0.0,
+            "mean": 0.14965986394557823,
+            "maximum": 2.0,
+            "standardDeviation": 0.37532283603084965,
+            "validPixels": 441
+          },
+          "measurementCoverage": {
+            "pixelsWithMeasurements": 63,
+            "pixelsWithoutMeasurements": 378,
+            "coveragePercent": 14.285714285714286,
+            "countDistribution": {
+              "0.0": 378,
+              "1.0": 60,
+              "2.0": 3
+            }
+          }
+        },
+        "slopeUncertainty": {
+          "unit": "degrees RMS",
+          "description": "Slope uncertainty",
+          "centrePixel": 1.281390905380249,
+          "neighbourhood": {
+            "minimum": 1.0726078748703003,
+            "median": 1.5778777599334717,
+            "mean": 1.6219934233191873,
+            "maximum": 3.565953254699707,
+            "standardDeviation": 0.3058858227912689,
+            "validPixels": 441
+          }
+        },
+        "elevationUncertainty": {
+          "unit": "metres RMS",
+          "description": "Total elevation uncertainty",
+          "centrePixel": 0.1836313009262085,
+          "neighbourhood": {
+            "minimum": 0.09157438576221466,
+            "median": 0.23077809810638428,
+            "mean": 0.2510724555439149,
+            "maximum": 0.732897937297821,
+            "standardDeviation": 0.08845270721278874,
+            "validPixels": 441
+          }
+        }
+      }
+    }
+  }
+}
