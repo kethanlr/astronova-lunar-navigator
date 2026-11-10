@@ -156,6 +156,7 @@ async function testInvalidInput() {
   };
 
   try {
+    // Empty candidate site list
     await assert.rejects(
       compareCandidateSites({
         ...options,
@@ -164,6 +165,7 @@ async function testInvalidInput() {
       /At least one candidate site/
     );
 
+    // Negative observer altitude
     await assert.rejects(
       compareCandidateSites({
         ...options,
@@ -172,17 +174,16 @@ async function testInvalidInput() {
       /observer altitude/
     );
 
+    // Duplicate candidate site IDs
     await assert.rejects(
       compareCandidateSites({
         ...options,
-        sites: [
-          sites[0],
-          sites[0],
-        ],
+        sites: [sites[0], sites[0]],
       }),
       /Duplicate candidate site ID/
     );
 
+    // Invalid candidate coordinates
     await assert.rejects(
       compareCandidateSites({
         ...options,
@@ -196,6 +197,44 @@ async function testInvalidInput() {
       /Invalid candidate site/
     );
 
+    // Impossible calendar date
+    await assert.rejects(
+      compareCandidateSites({
+        ...options,
+        startTime: "2026-Feb-30 00:00",
+      }),
+      /Invalid UTC timestamp/
+    );
+
+    // Invalid clock value
+    await assert.rejects(
+      compareCandidateSites({
+        ...options,
+        startTime: "2026-Nov-14 25:00",
+      }),
+      /Invalid UTC timestamp/
+    );
+
+    // Invalid timestamp format
+    await assert.rejects(
+      compareCandidateSites({
+        ...options,
+        stopTime: "14-Nov-2026 00:10",
+      }),
+      /Invalid UTC timestamp/
+    );
+
+    // Start time later than stop time
+    await assert.rejects(
+      compareCandidateSites({
+        ...options,
+        startTime: "2026-Nov-14 00:20",
+        stopTime: "2026-Nov-14 00:10",
+      }),
+      /Start time must be earlier/
+    );
+
+    // Invalid scenarios must never reach the NASA client
     assert.equal(requestCount, 0);
   } finally {
     globalThis.fetch = originalFetch;
@@ -204,9 +243,20 @@ async function testInvalidInput() {
 
 console.log("\nASTRO-NOVA MULTI-SITE COMPARISON TEST\n");
 
-await runTest("Three-site successful comparison (six requests)", testSuccessfulComparison);
-await runTest("Partial failure preserves remaining results", testPartialFailure);
-await runTest("Invalid input is rejected before requests", testInvalidInput);
+await runTest(
+  "Three-site successful comparison (six requests)",
+  testSuccessfulComparison
+);
+
+await runTest(
+  "Partial failure preserves remaining results",
+  testPartialFailure
+);
+
+await runTest(
+  "Invalid inputs and timestamps rejected before requests",
+  testInvalidInput
+);
 
 if (process.exitCode !== 1) {
   console.log("\nALL COMPARISON TESTS PASSED!");

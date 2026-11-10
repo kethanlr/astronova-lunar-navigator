@@ -1,5 +1,6 @@
 
 import { fetchHorizonsData } from "./horizonsClient.js";
+import { validateMissionScenario } from "./validateMissionScenario.js";
 
 /**
  * Fetches independent Sun and Earth ephemerides for
@@ -8,6 +9,7 @@ import { fetchHorizonsData } from "./horizonsClient.js";
  * Each target request is handled independently so that
  * partial results are preserved when a request fails.
  *
+ * Mission inputs are validated before NASA requests begin.
  * altitudeMeters must be explicitly supplied.
  * Zero is allowed only as an explicitly chosen test value.
  */
@@ -17,48 +19,15 @@ export async function compareCandidateSites({
   startTime,
   stopTime,
 }) {
-  if (!Array.isArray(sites) || sites.length === 0) {
-    throw new Error("At least one candidate site is required.");
-  }
+  const validation = validateMissionScenario({
+    sites,
+    altitudeMeters,
+    startTime,
+    stopTime,
+  });
 
-  if (
-    !Number.isFinite(altitudeMeters) ||
-    altitudeMeters < 0
-  ) {
-    throw new Error("A valid observer altitude in meters is required.");
-  }
-
-  if (
-    typeof startTime !== "string" ||
-    typeof stopTime !== "string" ||
-    !startTime.trim() ||
-    !stopTime.trim()
-  ) {
-    throw new Error("Valid UTC start and stop times are required.");
-  }
-
-  const siteIds = new Set();
-
-  for (const site of sites) {
-    if (
-      !site ||
-      typeof site.id !== "string" ||
-      !site.id.trim() ||
-      !Number.isFinite(site.longitudeEastDeg) ||
-      site.longitudeEastDeg < 0 ||
-      site.longitudeEastDeg > 360 ||
-      !Number.isFinite(site.latitudeDeg) ||
-      site.latitudeDeg < -90 ||
-      site.latitudeDeg > 90
-    ) {
-      throw new Error("Invalid candidate site information.");
-    }
-
-    if (siteIds.has(site.id)) {
-      throw new Error(`Duplicate candidate site ID: ${site.id}`);
-    }
-
-    siteIds.add(site.id);
+  if (!validation.valid) {
+    throw new Error(validation.error);
   }
 
   const results = await Promise.all(
