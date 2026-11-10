@@ -213,6 +213,142 @@ standard deviation, and valid pixel count.
 - Neighbourhood statistics do not replace detailed hazard mapping.
 - No landing suitability score is currently calculated by this module.
 
+### Terrain Horizon Analysis
+
+#### Implementation
+
+The terrain horizon pipeline independently analyzes the surrounding LOLA elevation model for each candidate landing site.
+
+Main files:
+
+- `src/integration/terrain/analyzeTerrainHorizon.py`
+- `src/integration/terrain/testTerrainHorizon.py`
+
+Input products:
+
+- Site07 surface elevation (`surf`).
+- Site07 LOLA measurement count (`ldec`).
+- Site07 total elevation uncertainty (`toterr`).
+
+#### Processing method
+
+For each candidate site, the analyzer:
+
+1. Loads and validates the alignment of the DEM, LDEC and TOTERR rasters.
+2. Uses the candidate's projected raster location and centre-pixel elevation as the origin.
+3. Samples 360 radial directions at 1-degree azimuth intervals.
+4. Samples the terrain at nominal 5-metre intervals, up to a requested maximum ground distance of 5,000 metres.
+5. Uses the DEM cell centre as the representative terrain location.
+6. Calculates apparent terrain elevation angles relative to the candidate origin elevation.
+7. Applies an approximate spherical lunar curvature correction.
+8. Tracks raster coverage, unique terrain pixels and LOLA measurement coverage independently for every azimuth.
+9. Extracts the TOTERR value from the DEM cell producing the maximum apparent terrain elevation angle.
+10. Exports the results as JSON.
+
+Azimuth convention:
+
+- 0 degrees: local north.
+- 90 degrees: local east.
+- 180 degrees: local south.
+- 270 degrees: local west.
+
+The convention is clockwise from local north. Its orientation must be independently verified against reference geometry before operational use.
+
+#### Horizon calculation interpretation
+
+`horizonElevationDeg` represents the maximum apparent elevation angle of sampled terrain relative to the candidate origin pixel elevation, using the approximate curvature correction.
+
+`horizonDistanceMeters` is the radial ground distance from the candidate origin to the centre of the DEM cell producing that maximum angle.
+
+These values describe sampled terrain geometry. They are not direct measurements of Sun or Earth visibility.
+
+A negative horizon elevation angle is valid when all sampled terrain points along that ray remain below the candidate's local tangent-plane reference after the applied correction.
+
+#### Coverage and data quality
+
+Each azimuth ray independently records:
+
+- Requested maximum distance.
+- Actual terrain coverage distance.
+- Whether the requested distance was fully covered.
+- The reason sampling terminated.
+- Number of unique terrain pixels sampled.
+- Pixels with and without recorded LOLA measurements.
+- LOLA measurement coverage percentage.
+
+A ray terminating at the raster boundary is incomplete. Its result must not be interpreted as a complete 5-kilometre terrain horizon.
+
+The Site07 raster does not provide equal directional coverage for every candidate:
+
+- PNS01: 191 of 360 rays have complete 5-kilometre coverage.
+- PNS02: 187 of 360 rays have complete 5-kilometre coverage.
+- PNS03: 360 of 360 rays have complete 5-kilometre coverage.
+
+#### Elevation uncertainty
+
+`horizonPointElevationUncertaintyMetersRms` contains the NASA TOTERR value from the same raster cell that produces the maximum apparent terrain elevation angle.
+
+The value is elevation uncertainty in metres RMS. It is not horizon-angle uncertainty.
+
+The uncertainty value is not propagated through the horizon-angle calculation.
+
+`horizonRasterRow` and `horizonRasterColumn` identify the corresponding source raster cell, allowing independent verification against the NASA TOTERR GeoTIFF.
+
+#### Output file
+
+`data/processed/lola_site07_horizon.json`
+
+Top-level structure:
+
+- `metadata`
+- `sites`
+
+Metadata records the NASA source, input raster names, resolution, lunar reference radius, azimuth interval, sampling interval, requested maximum distance, azimuth convention, curvature correction, projection assumption, horizon-distance definition, uncertainty processing and scientific limitations.
+
+Each site contains:
+
+- `coordinates`
+- `originElevationMeters`
+- `projectionScaleFactor`
+- `azimuthConvention`
+- `summary`
+- `rays`
+
+Each ray contains:
+
+- `azimuthDeg`
+- `horizonElevationDeg`
+- `horizonDistanceMeters`
+- `horizonTerrainElevationMeters`
+- `horizonPointLolaMeasurementCount`
+- `horizonPointElevationUncertaintyMetersRms`
+- `horizonRasterRow`
+- `horizonRasterColumn`
+- `uniqueTerrainPixelsSampled`
+- `pixelsWithLolaMeasurements`
+- `pixelsWithoutLolaMeasurements`
+- `measurementCoveragePercent`
+- `coverageDistanceMeters`
+- `requestedDistanceMeters`
+- `coverageComplete`
+- `terminationReason`
+
+#### Scientific limitations
+- The nominal 5-metre sampling interval does not imply 5-metre
+  positional accuracy; reported horizon distances use DEM cell
+  centres and an approximate projection scale factor.
+- Analysis is restricted to the downloaded Site07 raster coverage.
+- The spherical polar stereographic scale-factor approximation is used for ground distances.
+- The horizon calculation uses an approximate spherical lunar geometry model.
+- The local azimuth orientation requires independent verification.
+- A 5-metre raster cell does not identify the exact position of a terrain feature within that cell.
+- Repeated azimuth rays may sample the same terrain pixel; they are not independent terrain observations.
+- DEM values may be interpolated. LDEC zero indicates no recorded LOLA measurement spot in that pixel.
+- Incomplete rays must not be treated as complete horizons.
+- TOTERR elevation uncertainty is not propagated into horizon-angle uncertainty.
+- Atmospheric refraction is not modelled.
+- No Sun/Earth visibility calculation, communications assessment, power assessment or landing suitability score is performed by this module.
+
 ## 6. Illumination Integration
 
 NASA south-pole illumination imagery is available through the
